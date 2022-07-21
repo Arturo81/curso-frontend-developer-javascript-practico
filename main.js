@@ -7,13 +7,16 @@ const mobileMenu = document.querySelector('.mobile-menu');
 const menuCarritoIcon = document.querySelector('.navbar-shopping-cart');
 const shoppingCartContainer = document.querySelector('#shoppingCartContainer');
 
+const productDetailContainer = document.querySelector('#productDetail');
+const productDetailCloseIcon = document.querySelector('.product-detail-close');
+
 const cardsContainer = document.querySelector('.cards-container');
 
 
 menuEmail.addEventListener('click', toggleDesktopMenu);
 menuHamIcon.addEventListener('click', toggleMobileMenu);
 menuCarritoIcon.addEventListener('click', toggleCarritoMenu);
-
+productDetailCloseIcon.addEventListener('click', closeProductDetailAside)
 
 function toggleDesktopMenu(){
     const isCarritoMenuClosed = shoppingCartContainer.classList.contains('inactive');
@@ -31,12 +34,15 @@ function toggleMobileMenu(){
     if(!isCarritoMenuClosed){
         shoppingCartContainer.classList.add('inactive');
     }
+    closeProductDetailAside();
+
     mobileMenu.classList.toggle('inactive');
 }
 
 function toggleCarritoMenu(){
     const isMobileMenuClosed = mobileMenu.classList.contains('inactive');
     const isEmailMenuClosed = desktopMenu.classList.contains('inactive');
+    const isProductDetailClosed = productDetailContainer.classList.contains('inactive');
             
     if(!isMobileMenuClosed){
         mobileMenu.classList.add('inactive');
@@ -44,8 +50,20 @@ function toggleCarritoMenu(){
     if(!isEmailMenuClosed){
         desktopMenu.classList.add('inactive');
     }
+    if(!isProductDetailClosed){
+        productDetailContainer.classList.add('inactive');
+    }
     
     shoppingCartContainer.classList.toggle('inactive');
+}
+
+function openProductDetailAside(){
+    shoppingCartContainer.classList.add('inactive');
+    productDetailContainer.classList.remove('inactive');
+}
+
+function closeProductDetailAside(){
+    productDetailContainer.classList.add('inactive');
 }
 
 const productList = [];
@@ -65,6 +83,7 @@ productList.push({
     image: 'https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'
 });
 
+/*MUESTRA LA IMAGEN CON AL INFO DEL PRODUCTO*/
 function renderProducts(arr){
     for(product of arr){
         const productCard = document.createElement('div');
@@ -72,6 +91,7 @@ function renderProducts(arr){
     
         const productImg = document.createElement('img');
         productImg.setAttribute('src', product.image);
+        productImg.addEventListener('click', openProductDetailAside);
     
         const productInfo = document.createElement('div');
         productInfo.classList.add('product-info');
